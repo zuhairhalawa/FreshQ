@@ -11,6 +11,11 @@ import { join, resolve } from "node:path";
 // (never user input), so Node's DEP0190 warning about unescaped shell args is not applicable here.
 process.noDeprecation = true;
 
+// The package is published under a scope (npm rejected the unscoped name as too similar to "fresh");
+// the installed folder is node_modules/@zuhairhalawa/freshq, while the executable stays `freshq`.
+const PACKAGE_NAME = "@zuhairhalawa/freshq";
+const BIN_NAME = "freshq";
+
 const live = process.argv.includes("--live");
 const repo = resolve(import.meta.dirname, "..");
 const isWin = process.platform === "win32";
@@ -48,19 +53,25 @@ try {
   writeFileSync(join(proj, "package.json"), JSON.stringify({ name: "consumer", version: "1.0.0", private: true }));
   const inst = sh("npm", ["install", "--no-audit", "--no-fund", tarball], { cwd: proj });
   assert.equal(inst.code, 0, `npm install failed:\n${inst.err}`);
-  const pkg = JSON.parse(readFileSync(join(proj, "node_modules", "freshq", "package.json"), "utf8"));
+  const installed = join(proj, "node_modules", ...PACKAGE_NAME.split("/"));
+  const pkg = JSON.parse(readFileSync(join(installed, "package.json"), "utf8"));
+  const source = JSON.parse(readFileSync(join(repo, "package.json"), "utf8"));
+  assert.equal(pkg.name, PACKAGE_NAME, "installed package name");
+  assert.equal(pkg.version, source.version, "installed package version matches package.json");
+  assert.equal(pkg.bin?.[BIN_NAME], "dist/bin.js", `bin "${BIN_NAME}" maps to dist/bin.js`);
+  assert.deepEqual(Object.keys(pkg.bin ?? {}), [BIN_NAME], "only the freshq executable is exposed");
   assert.deepEqual(pkg.dependencies ?? {}, {}, "no runtime dependencies");
-  console.log(`    installed freshq@${pkg.version} with 0 runtime dependencies`);
+  console.log(`    installed ${pkg.name}@${pkg.version} with 0 runtime dependencies`);
 
   log("scan the installed files for credential-shaped strings");
   const secretRe = /\b(gh[pousr]_[A-Za-z0-9]{30,}|github_pat_[A-Za-z0-9_]{30,})\b/;
   for (const f of files) {
     if (/\.(js|json|md|ts)$/.test(f) || f === "LICENSE") {
-      assert.doesNotMatch(readFileSync(join(proj, "node_modules", "freshq", f), "utf8"), secretRe, `credential-like string in ${f}`);
+      assert.doesNotMatch(readFileSync(join(installed, f), "utf8"), secretRe, `credential-like string in ${f}`);
     }
   }
 
-  const bin = join(proj, "node_modules", ".bin", isWin ? "freshq.cmd" : "freshq");
+  const bin = join(proj, "node_modules", ".bin", isWin ? `${BIN_NAME}.cmd` : BIN_NAME);
   assert.ok(existsSync(bin), "bin shim exists");
   const freshq = (args) => sh(isWin ? `"${bin}"` : bin, args, { cwd: proj });
 

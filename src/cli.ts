@@ -13,7 +13,7 @@ export function readVersion(): string {
   for (const rel of [["..", "package.json"], ["..", "..", "package.json"]]) {
     try {
       const pkg = JSON.parse(readFileSync(join(here, ...rel), "utf8")) as { name?: unknown; version?: unknown };
-      if (pkg.name === "freshq" && typeof pkg.version === "string") return pkg.version;
+      if (pkg.name === "@zuhairhalawa/freshq" && typeof pkg.version === "string") return pkg.version;
     } catch {
       // try next location
     }

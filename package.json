@@ -1,6 +1,6 @@
 {
-  "name": "freshq",
-  "version": "0.1.0",
+  "name": "@zuhairhalawa/freshq",
+  "version": "0.1.1",
   "description": "Find newly posted, unanswered GitHub Discussions across repositories. Read-only CLI built on the GitHub GraphQL API.",
   "keywords": ["github", "discussions", "graphql", "cli", "unanswered", "q&a", "open-source"],
   "author": "zuhairhalawa",

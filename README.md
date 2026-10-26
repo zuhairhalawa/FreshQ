@@ -36,11 +36,11 @@ FreshQ is for maintainers triaging their own discussions, and for people who lik
 Requires **Node.js 20+** and a GitHub login - either the [GitHub CLI](https://cli.github.com/) (`gh auth login`) or a `GH_TOKEN` / `GITHUB_TOKEN` environment variable.
 
 ```sh
-npm install -g freshq
+npm install -g @zuhairhalawa/freshq
 freshq --help
 ```
 
-Or run without installing: `npx freshq --since 1h --unanswered`.
+Or run without installing: `npx @zuhairhalawa/freshq --since 1h --unanswered`.
 
 FreshQ has **zero runtime dependencies**.
 
