@@ -1,0 +1,31 @@
+{
+  "name": "freshq",
+  "version": "0.1.0",
+  "description": "Find newly posted, unanswered GitHub Discussions across repositories. Read-only CLI built on the GitHub GraphQL API.",
+  "keywords": ["github", "discussions", "graphql", "cli", "unanswered", "q&a", "open-source"],
+  "author": "zuhairhalawa",
+  "license": "MIT",
+  "type": "module",
+  "homepage": "https://github.com/zuhairhalawa/FreshQ#readme",
+  "repository": { "type": "git", "url": "git+https://github.com/zuhairhalawa/FreshQ.git" },
+  "bugs": { "url": "https://github.com/zuhairhalawa/FreshQ/issues" },
+  "bin": { "freshq": "dist/bin.js" },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": ["dist", "README.md", "LICENSE"],
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "clean": "node scripts/clean.mjs",
+    "build": "npm run clean && tsc -p tsconfig.build.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "pretest": "node scripts/clean.mjs .test-build && tsc -p tsconfig.json",
+    "test": "node scripts/run-tests.mjs",
+    "test:integration": "node scripts/integration.mjs",
+    "verify:package": "node scripts/verify-package.mjs",
+    "prepack": "npm run build"
+  },
+  "devDependencies": {
+    "@types/node": "^24.19.2",
+    "typescript": "^7.0.2"
+  }
+}
