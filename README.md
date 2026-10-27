@@ -2,6 +2,42 @@
 
 **Find GitHub Discussions that were posted minutes ago and still have no answer.**
 
+<p align="center">
+  <img src="docs/assets/freshq-discussions-demo.gif" width="880" alt="Animated terminal demo: the freshq command is typed with --since 2h, --unanswered, --zero-comments and --limit 4. It prints four newest-first GitHub Discussions, each with its repository, category, an unanswered label, 0 comments, its age (from just now to 4 minutes) and a link. The command exits with code 0.">
+</p>
+
+*Live capture, 2026-10-27 14:52 UTC, against the public GitHub API (read-only; exit code 0). Discussions and ages change by the minute, so a run today will show different results. Discussion titles are written by third parties and are shown unedited.*
+
+<details>
+<summary>Text transcript of the demo</summary>
+
+```console
+$ freshq --since 2h --unanswered --zero-comments --limit 4
+FreshQ · unanswered Q&A, zero-comment discussions created in the last 2h · newest first
+
+1. Zitat zu Folge #313: DEUTSCHLAND WIRD BEIGE
+   crorry-dev/GemischtesHack #75 · Q&A · unanswered · 0 comments · just now
+   https://github.com/crorry-dev/GemischtesHack/discussions/75
+
+2. How to translate date names to another language?
+   GetPublii/Publii #2737 · Help · unanswered · 0 comments · 1m ago
+   https://github.com/GetPublii/Publii/discussions/2737
+
+3. Why reder video on laptop amd not work full vga
+   jub0t/Concat #564 · Q&A · unanswered · 0 comments · 4m ago
+   https://github.com/jub0t/Concat/discussions/564
+
+4. Trying to use Modem73 within linbpq64 (BPQ32) - are others?
+   RFnexus/modem73 #96 · Q&A · unanswered · 0 comments · 4m ago
+   https://github.com/RFnexus/modem73/discussions/96
+
+4 discussions shown (limit 4; raise it with --limit).
+```
+
+Captured 2026-10-27 14:52 UTC with FreshQ 0.1.1 (exit code 0), run from a local build of this repository (`node dist/bin.js`, which is the `freshq` binary) with `--no-color`. Ages such as "just now" and "4m ago" are relative to that capture time. The animation only types and reveals this output; it does not query GitHub itself.
+
+</details>
+
 FreshQ is a small, read-only command-line tool. It searches *all public* GitHub Discussions (or just the repositories and organizations you care about) for questions that were **created** in the last hour, two hours, day or week, and shows the ones nobody has answered yet - newest first, with direct links.
 
 ```console
